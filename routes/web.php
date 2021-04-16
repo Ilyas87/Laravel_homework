@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Controllers\CarController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +18,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+require __DIR__.'/auth.php';
+
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('layouts.app');
+})->name('home');
+
+Route::redirect('/', 'cars');
+
+Route::resource('cars', CarController::class);
+
+Route::get('/profile/{user}', [UserController::class, 'show'])
+    ->name('profile');

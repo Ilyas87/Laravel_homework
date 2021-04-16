@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,13 +12,15 @@ class CreateCarsTable extends Migration
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         Schema::create('cars', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(User::class)
+                ->constrained()
+                ->cascadeOnDelete();
             $table->string('name');
             $table->string('color')->nullable();
-            $table->string('year')->nullable();
+            $table->string('year');
             $table->string('engine')->nullable();
             $table->string('transmission')->nullable();
             $table->string('mileage')->nullable();
@@ -30,8 +33,7 @@ class CreateCarsTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('cars');
     }
 }
