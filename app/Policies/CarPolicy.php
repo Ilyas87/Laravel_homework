@@ -11,6 +11,11 @@ class CarPolicy
 {
     use HandlesAuthorization;
 
+    public function create(User $user)
+    {
+        return $user->id == Auth::id();
+    }
+
     public function update(User $user, Car $car)
     {
         return $user->id == $car->user_id;
