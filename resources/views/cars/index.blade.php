@@ -10,7 +10,7 @@
                             <div class="text-2xl flex-wrap" style="height: 64px;">{{ $car->name }}</div>
                             <div class="mb-3">{{ $car->year }} года</div>
                             <div style="height: 252px">
-                                <img src="{{ Storage::url($car->image) }}" class="rounded-md" style="height: 100%; width: 100%; object-fit: cover;">
+                                <img src="{{ Storage::url($car->carImage()) }}" class="rounded-md" style="height: 100%; width: 100%; object-fit: cover;">
                             </div>
                         </a>
                     </div>

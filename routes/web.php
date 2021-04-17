@@ -29,4 +29,4 @@ Route::redirect('/', 'cars');
 Route::resource('cars', CarController::class);
 
 Route::get('/profile/{user}', [UserController::class, 'show'])
-    ->name('profile');
+    ->name('profile.show');

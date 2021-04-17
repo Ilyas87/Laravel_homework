@@ -10,7 +10,10 @@ class CarController extends Controller
 {
     public function __construct() {
         $this->middleware('auth')
-            ->except('index');
+            ->except(['index', 'show']);
+        $this->authorizeResource(Car::class, 'car', [
+            'except' => ['index', 'show']
+        ]);
     }
 
     function index() {

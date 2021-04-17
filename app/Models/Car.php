@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Car extends Model
 {
@@ -31,5 +32,10 @@ class Car extends Model
 
         if (file_exists($path))
             unlink($path);
+    }
+
+    public function carImage(){
+        $imagePath = $this->image ? $this->image : 'images/defaultImage.jpg';
+        return $imagePath;
     }
 }

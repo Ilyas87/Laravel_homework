@@ -40,7 +40,14 @@
                                 </div>
 
                                 <!-- Right side menu -->
-                                @auth
+                                @guest
+                                    <div class="hidden sm:flex sm:items-center sm:ml-6">
+                                        <div align="right" width="48">
+                                            <a href="{{ route('login') }}" class="text-lg text-gray-500 hover:text-black focus:outline-none no-underline">Вход</a>
+                                            <a href="{{ route('register') }}" class="ml-4 text-lg text-gray-500 hover:text-black focus:outline-none no-underline">Регистрация</a>
+                                        </div>
+                                    </div>
+                                @else
                                     <div class="sm:flex sm:items-center sm:ml-6 fixed right-96 top-7">
                                         <div>
                                             <a href="{{ route('cars.create') }}" class="text-decoration-none text-lg mr-5 text-gray-500 hover:text-black">Подать объявление</a>
@@ -60,7 +67,7 @@
 
                                             <x-slot name="content">
                                                 <!-- Authentication -->
-                                                <x-dropdown-link :href="route('profile', Auth::user())" :active="request()->routeIs('profile', Auth::user())" class="no-underline text-gray-500 hover:text-black focus:outline-none">
+                                                <x-dropdown-link :href="route('profile.show', Auth::user())" :active="request()->routeIs('profile.show', Auth::user())" class="no-underline text-gray-500 hover:text-black focus:outline-none">
                                                     Профиль
                                                 </x-dropdown-link>
                                                 <form method="POST" action="{{ route('logout') }}">
@@ -74,13 +81,6 @@
                                                 </form>
                                             </x-slot>
                                         </x-dropdown>
-                                    </div>
-                                @else
-                                    <div class="hidden sm:flex sm:items-center sm:ml-6">
-                                        <div align="right" width="48">
-                                            <a href="{{ route('login') }}" class="text-lg text-gray-500 hover:text-black focus:outline-none no-underline">Вход</a>
-                                            <a href="{{ route('register') }}" class="ml-4 text-lg text-gray-500 hover:text-black focus:outline-none no-underline">Регистрация</a>
-                                        </div>
                                     </div>
                                 @endauth
                             </div>
