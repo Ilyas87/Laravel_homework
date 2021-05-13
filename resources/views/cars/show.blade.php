@@ -2,9 +2,30 @@
 
 @section('content')
     <div class="flex p-4 bg-white overflow-hidden shadow-sm sm:rounded-md">
-        <div>
-            <div class="text-2xl">{{ $car->name }}</div>
-            <div class="mt-4 mr-3 border rounded-md" style="height: 600px; width: 900px;">
+        <div class="mr-3">
+            <div class="flex justify-between">
+                <div class="text-2xl">{{ $car->name }}</div>
+                <div class="flex">
+                    <div class="mr-5">
+                        @if($car->image)
+                            @can('update', $car)
+                                <form action="{{ route('cars.removeImage', $car) }}" method="post">
+                                    @csrf @method('put')
+                                    <button class="btn btn-light border">Удалить фото</button>
+                                </form>
+                            @endcan
+                        @endif
+                    </div>
+                    <div>
+                        @if($car->image)
+                            <form action="{{ route("cars.downloadImage", $car) }}" method="get">
+                                <button class="btn btn-light border">Скачать фото</button>
+                            </form>
+                        @endif
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4 border rounded-md" style="height: 600px; width: 900px;">
                 <img src="{{ Storage::url($car->carImage()) }}" style="height: 100%; width: 100%; object-fit: cover;">
             </div>
         </div>
@@ -23,7 +44,7 @@
                     </form>
                 @endcan
             </div>
-            <div class="pl-5 pt-2 flex flex-col">
+            <div class="pl-5 pt-3 flex flex-col">
                 <div class="pt-2 inline-flex">
                     <div class="pr-2">
                         <strong>Год</strong>
@@ -44,7 +65,7 @@
                 </div>
                 <div class="pt-2 inline-flex">
                     <div class="pr-2">
-                        <strong>Пробег</strong>
+                        <strong>Пробег, км</strong>
                     </div>
                     <span>{{ $car->mileage }}</span>
                 </div>

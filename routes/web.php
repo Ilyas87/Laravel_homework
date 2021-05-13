@@ -1,10 +1,7 @@
 <?php
 
 use App\Http\Controllers\CarController;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,6 +24,12 @@ Route::get('/', function () {
 Route::redirect('/', 'cars');
 
 Route::resource('cars', CarController::class);
+
+Route::put('cars/{car}/removeImage', [CarController::class, 'removeImage'])
+    ->name('cars.removeImage');
+
+Route::get('cars/{car}/downloadImage', [CarController::class, 'downloadImage'])
+    ->name('cars.downloadImage');
 
 Route::get('/profile/{user}', [UserController::class, 'show'])
     ->name('profile.show');

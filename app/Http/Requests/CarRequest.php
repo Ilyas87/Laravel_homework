@@ -22,7 +22,6 @@ class CarRequest extends FormRequest
 
     public function validatedWithImage() {
         $data = $this->validated();
-//        $defaultImage = 'public/images/defaultImage.jpg';
 
         if ($this->hasFile('image')) {
 
@@ -33,9 +32,6 @@ class CarRequest extends FormRequest
 
             $data['image'] = $this->file('image')->store('public/images');
         }
-//        else {
-//            $data['image'] = $defaultImage;
-//        }
 
         return $data;
     }

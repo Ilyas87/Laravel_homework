@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CarRequest;
 use App\Models\Car;
+use http\Env\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class CarController extends Controller
 {
@@ -57,5 +60,20 @@ class CarController extends Controller
         $car->deleteImage();
         $car->delete();
         return redirect()->route('cars.index');
+    }
+
+    function removeImage(Car $car) {
+        $this->authorize('update', $car);
+
+        $car->deleteImage();
+        $car->update([
+            'image' => null
+        ]);
+
+        return back();
+    }
+
+    function downloadImage(Car $car){
+        return Storage::download($car->carImage());
     }
 }
