@@ -1,81 +1,126 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="flex p-4 bg-white overflow-hidden shadow-sm sm:rounded-md">
-        <div class="mr-3">
-            <div class="flex justify-between">
-                <div class="text-2xl">{{ $car->name }}</div>
-                <div class="flex">
-                    <div class="mr-5">
+    @if(Auth::user())
+        <div class="flex justify-center mb-2 bg-white overflow-hidden shadow-sm sm:rounded-md">
+            <div class="p-3">
+                <ul class="flex p-0 m-0">
+                    @can('toggleFavorite', $car)
+                        <li class="mr-5">
+                            <button class="btn btn-light border"
+                                    type="button"
+                                    id="toggle-favorite"
+                                    data-is="{{ $car->followers()->where('user_id', auth()->id())->exists() ? 'true' : 'false' }}"
+                                    data-favorite="Добавить в избранное"
+                                    data-unfavorite="Удалить из избранного"
+                                    data-url="{{ route('cars.favorite', $car) }}"
+                            >
+                            </button>
+                        </li>
+                    @endcan
+
+                    @can('update', $car)
                         @if($car->image)
-                            @can('update', $car)
-                                <form action="{{ route('cars.removeImage', $car) }}" method="post">
-                                    @csrf @method('put')
+                            <li class="mr-5">
+                                <form action="{{ route('cars.removeImage', $car) }}" method="POST" class="m-0">
+                                    @csrf @method('PUT')
                                     <button class="btn btn-light border">Удалить фото</button>
                                 </form>
-                            @endcan
+                            </li>
                         @endif
-                    </div>
-                    <div>
-                        @if($car->image)
-                            <form action="{{ route("cars.downloadImage", $car) }}" method="get">
+                    @endcan
+
+                    @if($car->image)
+                        <li class="mr-5">
+                            <form action="{{ route("cars.downloadImage", $car) }}" method="GET" class="m-0">
                                 <button class="btn btn-light border">Скачать фото</button>
                             </form>
-                        @endif
-                    </div>
-                </div>
+                        </li>
+                    @endif
+
+                    @can('update', $car)
+                        <li class="mr-5">
+                            <a href="{{ route('cars.edit', $car) }}" class="btn btn-light border">
+                                Редактировать
+                            </a>
+                        </li>
+                    @endcan
+
+                    @can('delete', $car)
+                        <li class="mr-5">
+                            <form action="{{ route('cars.destroy', $car) }}" method="POST" class="m-0">
+                                @csrf
+                                @method('delete')
+                                <button class="btn btn-light border">Удалить объявление</button>
+                            </form>
+                        </li>
+                    @endcan
+                </ul>
             </div>
-            <div class="mt-4 border rounded-md" style="height: 600px; width: 900px;">
+        </div>
+    @endif
+
+    <div class="p-4 bg-white overflow-hidden shadow-sm sm:rounded-md">
+        <div class="text-2xl">{{ $car->name }}</div>
+        <div class="flex mt-4">
+            <div class="border rounded-md" style="height: 600px; width: 900px;">
                 <img src="{{ Storage::url($car->carImage()) }}" style="height: 100%; width: 100%; object-fit: cover;">
             </div>
-        </div>
-        <div class="w-64">
-            <div class="flex justify-around" style="height: 38px">
-                @can('update', $car)
-                    <a href="{{ route('cars.edit', $car) }}" class="btn btn-light border">
-                        Редактировать
-                    </a>
-                @endcan
-                @can('delete', $car)
-                    <form action="{{ route('cars.destroy', $car) }}" method="POST">
-                        @csrf
-                        @method('delete')
-                        <button class="btn btn-light border">Удалить</button>
-                    </form>
-                @endcan
-            </div>
-            <div class="pl-5 pt-3 flex flex-col">
-                <div class="pt-2 inline-flex">
-                    <div class="pr-2">
-                        <strong>Год</strong>
-                    </div>
+
+            <ul class="m-0">
+                <li class="flex mb-2">
+                    <div class="font-bold pr-2">Год</div>
                     <span>{{ $car->year }}</span>
-                </div>
-                <div class="pt-2 inline-flex">
-                    <div class="pr-2">
-                        <strong>Цвет</strong>
-                    </div>
+                </li>
+                <li class="flex mb-2">
+                    <div class="font-bold pr-2">Цвет</div>
                     <span>{{ $car->color }}</span>
-                </div>
-                <div class="pt-2 inline-flex">
-                    <div class="pr-2">
-                        <strong>Объем двигателя, л</strong>
-                    </div>
+                </li>
+                <li class="flex mb-2">
+                    <div class="font-bold pr-2">Объем двигателя, л</div>
                     <span>{{ $car->engane }}</span>
-                </div>
-                <div class="pt-2 inline-flex">
-                    <div class="pr-2">
-                        <strong>Пробег, км</strong>
-                    </div>
+                </li>
+                <li class="flex mb-2">
+                    <div class="font-bold pr-2">Пробег, км</div>
                     <span>{{ $car->mileage }}</span>
-                </div>
-                <div class="pt-2 inline-flex">
-                    <div class="pr-2">
-                        <strong>Коробка передач</strong>
-                    </div>
+                </li>
+                <li class="flex mb-2">
+                    <div class="font-bold pr-2">Коробка передач</div>
                     <span>{{ $car->transmission }}</span>
-                </div>
-            </div>
+                </li>
+            </ul>
         </div>
     </div>
+
+    @can('toggleFavorite', $car)
+        <script>
+            var favoriteButton = document.getElementById('toggle-favorite');
+            var isFavorite = favoriteButton.dataset.is === 'true';
+
+            const setFavoriteButtonText = () => {
+                let favoriteText = favoriteButton.dataset.favorite;
+                let unfavoriteText = favoriteButton.dataset.unfavorite;
+
+                favoriteButton.innerText = isFavorite ? unfavoriteText : favoriteText;
+            }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                setFavoriteButtonText();
+
+                favoriteButton.addEventListener('click', () => {
+                    axios.post(favoriteButton.dataset.url)
+                        .then((response) => {
+                            if (response.data.status === 'ok') {
+                                isFavorite = !isFavorite;
+                                favoriteButton.dataset.is = isFavorite ? 'true' : 'false';
+                            }
+                        })
+                        .finally(() => {
+                            setFavoriteButtonText();
+                        })
+                });
+            });
+        </script>
+    @endcan
+
 @endsection

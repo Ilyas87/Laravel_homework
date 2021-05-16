@@ -15,6 +15,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
 
         <!-- Scripts -->
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js" defer></script>
         <script src="{{ asset('js/app.js') }}" defer></script>
     </head>
     <body class="font-sans antialiased">
@@ -33,7 +34,7 @@
 
                                     <!-- Navigation Links -->
                                     <div class="flex-shrink-0 flex items-center sm:ml-10">
-                                        <form action="">
+                                        <form action="" class="mb-1">
                                             <x-input id="search" class="block mt-1 w-full" type="text" name="search" :value="old('search')" />
                                         </form>
                                     </div>
@@ -48,7 +49,7 @@
                                         </div>
                                     </div>
                                 @else
-                                    <div class="sm:flex sm:items-center sm:ml-6 fixed right-96 top-7">
+                                    <div class="sm:flex sm:fixed sm:items-center sm:ml-6 right-96 top-7">
                                         <div>
                                             <a href="{{ route('cars.create') }}" class="text-decoration-none text-lg mr-5 text-gray-500 hover:text-black">Подать объявление</a>
                                         </div>
@@ -70,7 +71,10 @@
                                                 <x-dropdown-link :href="route('profile.show', Auth::user())" :active="request()->routeIs('profile.show', Auth::user())" class="no-underline text-gray-500 hover:text-black focus:outline-none">
                                                     Профиль
                                                 </x-dropdown-link>
-                                                <form method="POST" action="{{ route('logout') }}">
+                                                <x-dropdown-link :href="route('favorite', Auth::user())" :active="request()->routeIs('favorite', Auth::user())" class="no-underline text-gray-500 hover:text-black focus:outline-none">
+                                                    Избранное
+                                                </x-dropdown-link>
+                                                <form method="POST" action="{{ route('logout') }}" class="mb-0">
                                                     @csrf
 
                                                     <x-dropdown-link :href="route('logout')"

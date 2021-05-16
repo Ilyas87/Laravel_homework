@@ -14,7 +14,7 @@
                         @csrf
 
                         @if($car)
-                            @method('put')
+                            @method('PUT')
                         @endif
 
                         <div class="col-md-12">

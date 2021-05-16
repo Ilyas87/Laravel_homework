@@ -24,7 +24,11 @@ class Car extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function deleteImage() {
+    function followers() {
+        return $this->belongsToMany(User::class, Favorite::class);
+    }
+
+    function deleteImage() {
         if (!$this->image)
             return;
 
@@ -34,7 +38,7 @@ class Car extends Model
             unlink($path);
     }
 
-    public function carImage(){
+    function carImage(){
         $imagePath = $this->image ? $this->image : 'images/defaultImage.jpg';
         return $imagePath;
     }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CarController;
+use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,5 +32,13 @@ Route::put('cars/{car}/removeImage', [CarController::class, 'removeImage'])
 Route::get('cars/{car}/downloadImage', [CarController::class, 'downloadImage'])
     ->name('cars.downloadImage');
 
+Route::post('cars/{car}/favorite', [FavoriteController::class, 'toggleButton'])
+    ->middleware('auth')
+    ->name('cars.favorite');
+
 Route::get('/profile/{user}', [UserController::class, 'show'])
     ->name('profile.show');
+
+Route::get('/profile/{user}/favorite', [FavoriteController::class, 'favorite'])
+    ->middleware('auth')
+    ->name('favorite');

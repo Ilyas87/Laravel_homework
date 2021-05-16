@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Car;
+use App\Models\Favorite;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Auth;
@@ -24,5 +25,9 @@ class CarPolicy
     public function delete(User $user, Car $car)
     {
         return $user->id == $car->user_id;
+    }
+
+    public function toggleFavorite(User $user) {
+        return $user->id == Auth::id();
     }
 }
