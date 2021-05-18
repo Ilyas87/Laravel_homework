@@ -1,13 +1,10 @@
 @if($cars->isEmpty())
     <div class="bg-white overflow-hidden shadow-sm sm:rounded-md m-1 my-2">
         <div class="p-6">
-            <h5>
-                Нет добавленных объявлений
-            </h5>
+            <h5>Нет добавленных объявлений</h5>
         </div>
     </div>
 @else
-
     <div class="flex flex-row flex-wrap">
         @foreach($cars as $car)
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-md m-1 my-2" style="width: 235px">

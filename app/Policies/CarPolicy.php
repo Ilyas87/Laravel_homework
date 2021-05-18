@@ -3,7 +3,6 @@
 namespace App\Policies;
 
 use App\Models\Car;
-use App\Models\Favorite;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Auth;
@@ -28,6 +27,14 @@ class CarPolicy
     }
 
     public function toggleFavorite(User $user) {
+        return $user->id == Auth::id();
+    }
+
+    public function downloadImage(User $user) {
+        return $user->id == Auth::id();
+    }
+
+    public function toggleLike(User $user) {
         return $user->id == Auth::id();
     }
 }

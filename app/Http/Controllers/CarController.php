@@ -72,6 +72,7 @@ class CarController extends Controller
     }
 
     function downloadImage(Car $car){
+        $this->authorize('downloadImage', $car);
         return Storage::download($car->carImage());
     }
 }

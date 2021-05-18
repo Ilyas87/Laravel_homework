@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 
 class Car extends Model
 {
@@ -26,6 +25,10 @@ class Car extends Model
 
     function followers() {
         return $this->belongsToMany(User::class, Favorite::class);
+    }
+
+    function likers(){
+        return $this->belongsToMany(User::class, Like::class);
     }
 
     function deleteImage() {

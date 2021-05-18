@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,15 +27,22 @@ Route::redirect('/', 'cars');
 
 Route::resource('cars', CarController::class);
 
-Route::put('cars/{car}/removeImage', [CarController::class, 'removeImage'])
-    ->name('cars.removeImage');
+Route::prefix('cars/{car}')->group(function() {
 
-Route::get('cars/{car}/downloadImage', [CarController::class, 'downloadImage'])
-    ->name('cars.downloadImage');
+    Route::put('removeImage', [CarController::class, 'removeImage'])
+        ->name('cars.removeImage');
 
-Route::post('cars/{car}/favorite', [FavoriteController::class, 'toggleButton'])
-    ->middleware('auth')
-    ->name('cars.favorite');
+    Route::get('downloadImage', [CarController::class, 'downloadImage'])
+        ->name('cars.downloadImage');
+
+    Route::post('favorite', [FavoriteController::class, 'toggleFavorite'])
+        ->middleware('auth')
+        ->name('cars.favorite');
+
+    Route::post('like', [LikeController::class, 'toggleLike'])
+        ->middleware('auth')
+        ->name('cars.like');
+});
 
 Route::get('/profile/{user}', [UserController::class, 'show'])
     ->name('profile.show');

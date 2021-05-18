@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 
 class FavoriteController extends Controller
 {
+    public function __construct() {
+        $this->middleware('auth');
+    }
+
     public function favorite(User $user){
         $this->authorize('view', $user);
         return view('favorite', [
@@ -15,7 +19,7 @@ class FavoriteController extends Controller
         ]);
     }
 
-    public function toggleButton(Car $car)
+    public function toggleFavorite(Car $car)
     {
         $this->authorize('toggle-favorite', $car);
 
